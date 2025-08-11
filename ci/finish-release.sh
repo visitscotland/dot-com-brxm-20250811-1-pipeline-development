@@ -58,6 +58,10 @@ else
     exit_on_failure "No remote release/* branch found. git branch -r | grep 'origin/release/' ..."
 fi
 
+if ! mvn versions:use-releases scm:checkin -Dmessage="Updated snapshot dependencies to release versions" -DpushChanges=false; then
+    exit_on_failure "Maven versions use-releases and scm checkin"
+fi
+
 echo 'Proceeding with the main finish-release script...'
 if ! mvn gitflow:release-finish -DskipTestProject=true; then
     exit_on_failure "Maven release finish"
